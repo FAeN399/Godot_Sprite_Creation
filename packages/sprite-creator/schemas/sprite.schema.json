@@ -1,0 +1,235 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Sprite Creator JSON Schema",
+  "description": "Schema for sprite data including layers, animations, palette, and variants",
+  "type": "object",
+  "required": ["version", "canvas", "layers", "animations", "palette"],
+  "properties": {
+    "version": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Schema version for compatibility"
+    },
+    "canvas": {
+      "type": "object",
+      "required": ["w", "h", "pixelSize"],
+      "properties": {
+        "w": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 512,
+          "description": "Canvas width in pixels"
+        },
+        "h": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 512,
+          "description": "Canvas height in pixels"
+        },
+        "pixelSize": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Pixel size multiplier"
+        }
+      }
+    },
+    "layers": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "opacity", "locked", "pixels"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^layer[0-9]+$",
+            "description": "Unique layer identifier"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Human-readable layer name"
+          },
+          "opacity": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Layer opacity from 0.0 to 1.0"
+          },
+          "locked": {
+            "type": "boolean",
+            "description": "Whether layer is locked for editing"
+          },
+          "pixels": {
+            "type": "string",
+            "description": "RLE-encoded pixel data"
+          }
+        }
+      }
+    },
+    "animations": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-zA-Z][a-zA-Z0-9_]*$": {
+          "type": "object",
+          "required": ["frames"],
+          "properties": {
+            "frames": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 256,
+              "items": {
+                "type": "object",
+                "required": ["layerRefs", "duration"],
+                "properties": {
+                  "layerRefs": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^layer[0-9]+$"
+                    },
+                    "description": "References to layers used in this frame"
+                  },
+                  "duration": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "description": "Frame duration in milliseconds"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "palette": {
+      "type": "array",
+      "maxItems": 256,
+      "items": {
+        "type": "string",
+        "pattern": "^#[0-9a-fA-F]{6}$",
+        "description": "Hex color code"
+      },
+      "description": "Color palette with max 256 colors"
+    },
+    "variants": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-zA-Z][a-zA-Z0-9_]*$": {
+          "type": "object",
+          "required": ["paletteMap"],
+          "properties": {
+            "paletteMap": {
+              "type": "object",
+              "patternProperties": {
+                "^#[0-9a-fA-F]{6}$": {
+                  "type": "string",
+                  "pattern": "^#[0-9a-fA-F]{6}$"
+                }
+              },
+              "additionalProperties": false,
+              "description": "Map of original color to replacement color"
+            }
+          }
+        }
+      },
+      "additionalProperties": false,
+      "description": "Palette-swap variants"
+    },
+    "generatorComponents": {
+      "type": "object",
+      "properties": {
+        "heads": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "layers", "palette"],
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Component identifier"
+              },
+              "layers": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Layer names for this component"
+              },
+              "palette": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Palette categories used by this component"
+              }
+            }
+          }
+        },
+        "bodies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "layers", "palette"],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "layers": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "palette": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "accessories": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "layers", "palette"],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "layers": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "palette": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "colorSchemes": {
+          "type": "object",
+          "patternProperties": {
+            "^[a-zA-Z][a-zA-Z0-9_]*$": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^#[0-9a-fA-F]{6}$"
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

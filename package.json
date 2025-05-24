@@ -1,0 +1,14 @@
+{
+  "name": "godot-sprite-creation",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "prepare": "husky install",
+    "lint": "pnpm --filter sprite-creator lint"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7"
+  }
+}

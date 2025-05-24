@@ -1,0 +1,31 @@
+name: CI - Sprite Creator
+
+on:
+  push:
+    paths:
+      - 'packages/sprite-creator/**'
+  pull_request:
+    paths:
+      - 'packages/sprite-creator/**'
+
+jobs:
+  test:
+    name: Install & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run tests
+        working-directory: packages/sprite-creator
+        run: pnpm test
