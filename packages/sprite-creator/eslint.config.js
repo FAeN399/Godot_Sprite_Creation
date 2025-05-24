@@ -6,6 +6,9 @@ import prettier from 'eslint-plugin-prettier';
 export default [
   js.configs.recommended,
   {
+    ignores: ['demo-*.js'], // Ignore demo files
+  },
+  {
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
       parser: typescriptParser,

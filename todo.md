@@ -16,7 +16,7 @@ date: 2025-05-24
 - [x] **Data Model Implementation** – make schema test pass (Plan 4)
 - [x] **Palette Utilities** – 256-color palette ops (Plan 5, SPR-FR-5/6)
 - [x] **Layer Bitmap Encoding** – RLE encode/decode (Plan 6, SPR-FR-2)
-- [ ] **Animation Timeline Model** – frames & durations (Plan 7, SPR-FR-3)
+- [x] **Animation Timeline Model** – frames & durations (Plan 7, SPR-FR-3)
 - [ ] **Undo/Redo Service** – command stack (Plan 8, SPR-FR-9)
 - [ ] **Autosave Service** – write/prune snapshots (Plan 9, SPR-FR-9)
 
@@ -34,11 +34,11 @@ date: 2025-05-24
 - [ ] **Timeline Component** – frame thumbnails & playback (Plan 19, SPR-FR-3)
 - [ ] **Toolbar & Hotkeys** – icons + keyboard map (Plan 20, SPR-FR-10)
 
-### Phase 5 – Exporters
-- [ ] **PNG Sheet Exporter** – generate sprite-sheet (Plan 21, SPR-FR-7)
-- [ ] **SpriteFrames `.tres` Exporter** – Godot resource (Plan 22, SPR-FR-7)
-- [ ] **GIF Preview Exporter** – optional animated gif (Plan 23, SPR-FR-7)
-- [ ] **Export Workflow Integration** – file in `sprites/` (Plan 24, SPR-FR-8)
+### Phase 5 – Exporters 🎯 **GODOT INTEGRATION CORE**
+- [ ] **PNG Sheet Exporter** – indexed PNG for Godot textures (Plan 21, SPR-FR-7)
+- [ ] **SpriteFrames `.tres` Exporter** – 🔥 **PRIMARY VALUE** native Godot resource (Plan 22, SPR-FR-7)
+- [ ] **GIF Preview Exporter** – animation preview (Plan 23, SPR-FR-7)
+- [ ] **Export Workflow Integration** – auto-sync to Godot project (Plan 24, SPR-FR-8)
 
 ### Phase 6 – Quality & Performance
 - [ ] **Performance Benchmark 60 FPS** – Playwright probe (Plan 25, NFR-1)

@@ -1,6 +1,6 @@
-# Sprite Creator UI Image Prompt
+# Godot Sprite Creator- **Animation Timeline (Bottom):** A horizontal panel showing animation names (e.g., "walk", "idle") with frame thumbnails. Each frame displays a small preview and duration input box. Controls to add/remove frames and play the animation loop. 🎯 **Export animations as SpriteFrames .tres** button prominently displayed.UI Image Prompt
 
-Imagine a modern, sleek pixel-art sprite creation application interface designed for game developers and artists:
+Imagine a modern, sleek pixel-art sprite creation application interface designed specifically for Godot game developers:
 
 - **Main Canvas:** A central square canvas (up to 512×512 pixels) displayed on a dark background with subtle gridlines. Each pixel is shown as a large square (zoomed in by a variable pixelSize slider on the top toolbar). The canvas area is framed by a thin neon-blue border with pixel coordinates along the top and left edges.
 
@@ -9,6 +9,7 @@ Imagine a modern, sleek pixel-art sprite creation application interface designed
   - Undo/Redo buttons
   - Pixel size slider (1× to 32× zoom)
   - Color picker swatch preview
+  - 🎯 **Export to Godot** button (prominent blue button)
   - Export sprite sheet button
 
 - **Layers Panel (Left):** A vertical sidebar listing layers named “layer1”, “layer2”, etc. Each entry shows:
@@ -28,4 +29,4 @@ Imagine a modern, sleek pixel-art sprite creation application interface designed
 
 - **Overall Style:** Dark-themed UI with neon-blue and teal accent highlights, crisp icons, minimal shadows. Text in a clean monospace font. The layout is responsive, with panels collapsible.
 
-Use this prompt to visualize the ideal image of the sprite-creator tool interface.
+Use this prompt to visualize the ideal image of the Godot Sprite Creator tool interface - emphasizing seamless Godot integration at every step.

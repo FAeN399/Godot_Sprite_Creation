@@ -11,14 +11,16 @@ related_documents:
 
 # 1  Introduction & Goals
 The **Sprite Creator** is a dedicated pixel-art editor inside the JRPG Desktop Tool-Suite.  
-Its mission is to let designers **draw, animate, recolor, and export** character and object sprites in a single workflow, then deliver Godot-ready assets with zero manual post-processing.
+Its mission is to let designers **draw, animate, recolor, and export** character and object sprites in a single workflow, then deliver **Godot-ready assets with zero manual post-processing**.
+
+🎯 **Core Value Proposition**: Eliminate the traditional sprite pipeline friction by providing direct, automated export to Godot's native SpriteFrames format with real-time project synchronization.
 
 **MVP Objectives**
 
 * Draw 16 – 128 px pixel art with classic tools (brush, eraser, bucket, marquee).  
-* Create multi-layer, multi-frame animations with onion-skin support.  
-* Batch-generate palette-swap variants.  
-* Export a sprite-sheet (`.png`) + **Godot SpriteFrames** resource (`.tres`) + optional preview `.gif`.  
+* Create multi-layer, multi-frame animations with onion-skin support and timeline-based editing.  
+* Batch-generate palette-swap variants for character customization.  
+* **🔥 PRIMARY GOAL**: Export sprite-sheet (`.png`) + **Godot SpriteFrames** resource (`.tres`) + optional preview `.gif` with one-click workflow.
 * One-click sync to ProjectStore so the Godot addon auto-imports updated sprites.
 
 ---
@@ -70,7 +72,12 @@ Its mission is to let designers **draw, animate, recolor, and export** character
 
 # 5  Data Model & Export Formats
 
+🎯 **Design Philosophy**: All data structures are optimized for seamless Godot export with zero manual conversion steps.
+
 ### 5.1 Internal JSON Schema (stored in `sprites/<name>.sprite.json`)
+
+The Animation Timeline Model provides native compatibility with Godot's SpriteFrames resource format:
+
 ```json
 {
   "version": 1,
@@ -82,14 +89,14 @@ Its mission is to let designers **draw, animate, recolor, and export** character
   "animations": {
     "walk": {
       "frames": [
-        { "layerRefs": ["layer0"], "duration": 100 },
-        { "layerRefs": ["layer0"], "duration": 100 }
+        { "layerRefs": ["layer0"], "duration": 100 },  // ms → direct Godot conversion
+        { "layerRefs": ["layer0"], "duration": 100 }   // frame duration in milliseconds
       ]
     }
   },
-  "palette": ["#000000", "#FFFFFF", "#4caf50" /* … 256 max */],
+  "palette": ["#000000", "#FFFFFF", "#4caf50" /* … 256 max */],  // PNG indexed colors
   "variants": {
-    "blue": { "paletteMap": { "#4caf50": "#2196f3" } }
+    "blue": { "paletteMap": { "#4caf50": "#2196f3" } }  // automatic palette swap variants
   }
 }
 ````
