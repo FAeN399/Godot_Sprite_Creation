@@ -16,6 +16,7 @@
 - ✅ **Define Sprite JSON Schema** (Plan 3) – `schemas/sprite.schema.json` + failing validation test passed
 - ✅ **Core Data Model Implementation** (Plan 4) – Implemented `src/model/Sprite.ts` with TypeBox + AJV validation; schema tests passing
 - ✅ **Palette Model & Utilities** (Plan 5) – ✅ COMPLETED: Implemented `src/model/Palette.ts` with 256-color limit, ASE import, palette swapping; 15 comprehensive tests passing
+- ✅ **Layer Bitmap Encoding** (Plan 6) – ✅ COMPLETED: Implemented `src/model/LayerBitmap.ts` with RLE compression for efficient bitmap storage; 13 comprehensive tests passing
 
 ## Current Status 📍
 
@@ -34,14 +35,14 @@
 
 ## Next Steps 🎯
 
-Ready to begin **Phase 3: UI Implementation**
+**Phase 2 Progress**: 4 of 5 core data model tasks completed (80%)
 
-This phase will focus on building out the user interface components and integrating them with the core data models and utilities established in Phase 2. Key tasks include:
+**Ready for Plan 7**: Animation Timeline Model - frames & durations implementation
 
-- Developing the sprite editor UI
-- Implementing the random sprite generator component
-- Integrating palette management features
-- Building out the animation timeline editor
+Next immediate tasks:
+- **Plan 7**: Animation Timeline Model (SPR-FR-3) - Create multi-frame animation support
+- **Plan 8**: Undo/Redo Service (SPR-FR-9) - Command stack for 100+ operations  
+- **Plan 9**: Autosave Service (SPR-FR-9) - 60s snapshots with recovery
 
-The foundation is set for a robust and flexible sprite creation and editing tool, leveraging the power of procedural generation and comprehensive data modeling.
+Once Phase 2 completes, we'll transition to **Phase 3: Canvas & Editing Tools** for the UI implementation.
 
