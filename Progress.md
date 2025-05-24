@@ -15,6 +15,7 @@
 ### Phase 2 – Core Data Models
 - ✅ **Define Sprite JSON Schema** (Plan 3) – `schemas/sprite.schema.json` + failing validation test passed
 - ✅ **Core Data Model Implementation** (Plan 4) – Implemented `src/model/Sprite.ts` with TypeBox + AJV validation; schema tests passing
+- ✅ **Palette Model & Utilities** (Plan 5) – ✅ COMPLETED: Implemented `src/model/Palette.ts` with 256-color limit, ASE import, palette swapping; 15 comprehensive tests passing
 
 ## Current Status 📍
 
@@ -33,21 +34,14 @@
 
 ## Next Steps 🎯
 
-Ready to begin **Plan 5: Palette Model & Utilities**
+Ready to begin **Phase 3: UI Implementation**
 
-```prompt
-Add tests for `Palette` class: max 256 colors, import `.ase`, map swap.
-Implement `src/model/Palette.ts` utilities to pass tests.
-Commit: "feat(model): palette utilities".
-```
+This phase will focus on building out the user interface components and integrating them with the core data models and utilities established in Phase 2. Key tasks include:
 
-This will establish the foundation for our sprite data model, including support for:
+- Developing the sprite editor UI
+- Implementing the random sprite generator component
+- Integrating palette management features
+- Building out the animation timeline editor
 
-- Multi-layer sprite structure
-- Animation timelines with frame durations
-- 256-color palette management
-- Palette-swap variants
-- Random sprite generator component templates
-
-The TDD approach ensures we build robust, tested functionality from the ground up before moving to UI implementation in Phase 3.
+The foundation is set for a robust and flexible sprite creation and editing tool, leveraging the power of procedural generation and comprehensive data modeling.
 
