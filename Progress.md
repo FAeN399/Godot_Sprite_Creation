@@ -12,6 +12,10 @@
 - ✅ **Detailed Execution Plan** – TDD-driven prompt_plan.md with step-by-step implementation
 - ✅ **Random Sprite Generator** – Added feature specification with component templates for procedural sprite generation
 
+### Phase 2 – Core Data Models
+- ✅ **Define Sprite JSON Schema** (Plan 3) – `schemas/sprite.schema.json` + failing validation test passed
+- ✅ **Core Data Model Implementation** (Plan 4) – Implemented `src/model/Sprite.ts` with TypeBox + AJV validation; schema tests passing
+
 ## Current Status 📍
 
 **Infrastructure**: ✅ Complete
@@ -21,23 +25,20 @@
 - Git hooks for code quality enforcement
 
 **Planning**: ✅ Complete
+
 - All 11 functional requirements defined
 - Detailed UI/UX layout specified
 - Data models and export formats documented
 - Component architecture for random sprite generation
 
-### Phase 2 – Core Data Models
-
-- ✅ **Define Sprite JSON Schema** (Plan 3) – `schemas/sprite.schema.json` + failing validation test passed
-
 ## Next Steps 🎯
 
-Ready to begin **Plan 4: Core Data Model Implementation (covers Plan 3 tests)**
+Ready to begin **Plan 5: Palette Model & Utilities**
 
 ```prompt
-Implement `src/model/Sprite.ts` with TypeBox + ajv validation.  
-Make the schema test from Plan 3 pass.  
-Commit: "feat(model): Sprite data model".
+Add tests for `Palette` class: max 256 colors, import `.ase`, map swap.
+Implement `src/model/Palette.ts` utilities to pass tests.
+Commit: "feat(model): palette utilities".
 ```
 
 This will establish the foundation for our sprite data model, including support for:

@@ -13,7 +13,7 @@ date: 2025-05-24
 
 ### Phase 2 – Core Data Models
 - [x] **Sprite JSON Schema** – define & failing validation test (Plan 3, SPR-FR-2/3)
-- [ ] **Data Model Implementation** – make schema test pass (Plan 4)
+- [x] **Data Model Implementation** – make schema test pass (Plan 4)
 - [ ] **Palette Utilities** – 256-color palette ops (Plan 5, SPR-FR-5/6)
 - [ ] **Layer Bitmap Encoding** – RLE encode/decode (Plan 6, SPR-FR-2)
 - [ ] **Animation Timeline Model** – frames & durations (Plan 7, SPR-FR-3)
