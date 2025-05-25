@@ -19,6 +19,9 @@ export default [
       globals: {
         console: 'readonly',
         process: 'readonly',
+        setTimeout: 'readonly',
+        clearInterval: 'readonly',
+        setInterval: 'readonly',
       },
     },
     plugins: {

@@ -87,7 +87,7 @@ export type Animation = Static<typeof AnimationSchema>;
 export type Variant = Static<typeof VariantSchema>;
 export type GeneratorComponent = Static<typeof GeneratorComponentSchema>;
 export type GeneratorComponents = Static<typeof GeneratorComponentsSchema>;
-export type Sprite = Static<typeof SpriteSchema>;
+export type SpriteData = Static<typeof SpriteSchema>;
 
 // Validator instance
 const ajv = new Ajv();
@@ -97,7 +97,7 @@ const validateSprite = ajv.compile(SpriteSchema);
  * Sprite data model class with validation capabilities
  */
 export class SpriteModel {
-  constructor(private data: Sprite) {
+  constructor(private data: SpriteData) {
     if (!this.validate()) {
       throw new Error(
         `Invalid sprite data: ${JSON.stringify(validateSprite.errors)}`,
@@ -122,7 +122,7 @@ export class SpriteModel {
   /**
    * Gets the sprite data
    */
-  getData(): Sprite {
+  getData(): SpriteData {
     return this.data;
   }
 
@@ -185,14 +185,14 @@ export class SpriteModel {
   /**
    * Gets generator components for random sprite generation
    */
-  getGeneratorComponents(): GeneratorComponents {
+  getGeneratorComponents(): GeneratorComponents | undefined {
     return this.data.generatorComponents;
   }
 
   /**
    * Creates a new sprite with the given data
    */
-  static create(data: Sprite): SpriteModel {
+  static create(data: SpriteData): SpriteModel {
     return new SpriteModel(data);
   }
 
@@ -222,7 +222,7 @@ export class SpriteModel {
 /**
  * Utility function to validate sprite data without creating a model instance
  */
-export function validateSpriteData(data: unknown): data is Sprite {
+export function validateSpriteData(data: unknown): data is SpriteData {
   return validateSprite(data);
 }
 
@@ -232,4 +232,64 @@ export function validateSpriteData(data: unknown): data is Sprite {
 export function getSpriteValidationErrors(data: unknown) {
   validateSprite(data);
   return validateSprite.errors;
+}
+
+/**
+ * Sprite class for test compatibility and simple usage
+ * This provides a constructor-based interface that matches test expectations
+ */
+export class Sprite {
+  private name: string;
+  private width: number;
+  private height: number;
+  private layers: Array<{ id: string; name: string }> = [];
+
+  constructor(name: string, width: number, height: number) {
+    this.name = name;
+    this.width = width;
+    this.height = height;
+  }
+
+  getName(): string {
+    return this.name;
+  }
+
+  setName(name: string): void {
+    this.name = name;
+  }
+
+  getWidth(): number {
+    return this.width;
+  }
+
+  getHeight(): number {
+    return this.height;
+  }
+
+  addLayer(layerName: string): void {
+    const layerId = `layer${this.layers.length}`;
+    this.layers.push({ id: layerId, name: layerName });
+  }
+
+  getLayers(): Array<{ id: string; name: string }> {
+    return [...this.layers];
+  }
+
+  toJSON(): string {
+    return JSON.stringify({
+      name: this.name,
+      width: this.width,
+      height: this.height,
+      layers: this.layers,
+    });
+  }
+
+  static fromJSON(json: string): Sprite {
+    const data = JSON.parse(json);
+    const sprite = new Sprite(data.name, data.width, data.height);
+    if (data.layers) {
+      sprite.layers = [...data.layers];
+    }
+    return sprite;
+  }
 }

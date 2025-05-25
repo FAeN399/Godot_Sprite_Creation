@@ -10,40 +10,48 @@ console.log('🎬 Animation Timeline Model Demo\n');
 
 // Simulate AnimationFrame creation
 function createFrameDemo(layerRefs, duration) {
-    console.log(`📋 Creating AnimationFrame:`);
-    console.log(`   Layer References: [${layerRefs.join(', ')}]`);
-    console.log(`   Duration: ${duration}ms`);
-    console.log(`   Visual: ${layerRefs.map(ref => `[${ref}]`).join(' + ')} → ⏱️${duration}ms\n`);
-    return { layerRefs: [...layerRefs], duration };
+  console.log(`📋 Creating AnimationFrame:`);
+  console.log(`   Layer References: [${layerRefs.join(', ')}]`);
+  console.log(`   Duration: ${duration}ms`);
+  console.log(
+    `   Visual: ${layerRefs.map((ref) => `[${ref}]`).join(' + ')} → ⏱️${duration}ms\n`,
+  );
+  return { layerRefs: [...layerRefs], duration };
 }
 
 // Simulate Animation creation
 function createAnimationDemo(name, frames) {
-    console.log(`🎭 Creating Animation: "${name}"`);
-    console.log(`   Frame Count: ${frames.length}`);
-    console.log(`   Total Duration: ${frames.reduce((sum, f) => sum + f.duration, 0)}ms\n`);
-    
-    // Visual timeline representation
-    console.log('📊 Animation Timeline:');
-    console.log('   ' + '─'.repeat(60));
-    
-    let currentTime = 0;
-    frames.forEach((frame, index) => {
-        const layerVisual = frame.layerRefs.map(ref => ref.replace('layer', 'L')).join('+');
-        const timeRange = `${currentTime}ms-${currentTime + frame.duration}ms`;
-        console.log(`   Frame ${index + 1}: [${layerVisual}] ${timeRange} (${frame.duration}ms)`);
-        
-        // Visual bar representation
-        const barLength = Math.max(1, Math.floor(frame.duration / 50));
-        const bar = '█'.repeat(barLength);
-        console.log(`            ${bar}`);
-        
-        currentTime += frame.duration;
-    });
-    console.log('   ' + '─'.repeat(60));
-    console.log(`   Total: ${currentTime}ms\n`);
-    
-    return { name, frames: [...frames] };
+  console.log(`🎭 Creating Animation: "${name}"`);
+  console.log(`   Frame Count: ${frames.length}`);
+  console.log(
+    `   Total Duration: ${frames.reduce((sum, f) => sum + f.duration, 0)}ms\n`,
+  );
+
+  // Visual timeline representation
+  console.log('📊 Animation Timeline:');
+  console.log('   ' + '─'.repeat(60));
+
+  let currentTime = 0;
+  frames.forEach((frame, index) => {
+    const layerVisual = frame.layerRefs
+      .map((ref) => ref.replace('layer', 'L'))
+      .join('+');
+    const timeRange = `${currentTime}ms-${currentTime + frame.duration}ms`;
+    console.log(
+      `   Frame ${index + 1}: [${layerVisual}] ${timeRange} (${frame.duration}ms)`,
+    );
+
+    // Visual bar representation
+    const barLength = Math.max(1, Math.floor(frame.duration / 50));
+    const bar = '█'.repeat(barLength);
+    console.log(`            ${bar}`);
+
+    currentTime += frame.duration;
+  });
+  console.log('   ' + '─'.repeat(60));
+  console.log(`   Total: ${currentTime}ms\n`);
+
+  return { name, frames: [...frames] };
 }
 
 // Demo 1: Simple walking animation
@@ -55,29 +63,39 @@ const walkFrame2 = createFrameDemo(['layer1', 'layer3'], 100);
 const walkFrame3 = createFrameDemo(['layer1', 'layer4'], 100);
 const walkFrame4 = createFrameDemo(['layer1', 'layer3'], 100);
 
-const walkAnimation = createAnimationDemo('walk_cycle', [walkFrame1, walkFrame2, walkFrame3, walkFrame4]);
+const walkAnimation = createAnimationDemo('walk_cycle', [
+  walkFrame1,
+  walkFrame2,
+  walkFrame3,
+  walkFrame4,
+]);
 
 // Demo 2: Complex attack animation
 console.log('⚔️  Demo 2: Attack Animation');
 console.log('============================');
 
-const attackFrame1 = createFrameDemo(['layer1', 'layer2'], 50);    // Wind up
-const attackFrame2 = createFrameDemo(['layer1', 'layer5'], 25);    // Strike
-const attackFrame3 = createFrameDemo(['layer1', 'layer6'], 25);    // Impact
-const attackFrame4 = createFrameDemo(['layer1', 'layer7'], 150);   // Recovery
+const attackFrame1 = createFrameDemo(['layer1', 'layer2'], 50); // Wind up
+const attackFrame2 = createFrameDemo(['layer1', 'layer5'], 25); // Strike
+const attackFrame3 = createFrameDemo(['layer1', 'layer6'], 25); // Impact
+const attackFrame4 = createFrameDemo(['layer1', 'layer7'], 150); // Recovery
 
-const attackAnimation = createAnimationDemo('sword_attack', [attackFrame1, attackFrame2, attackFrame3, attackFrame4]);
+const attackAnimation = createAnimationDemo('sword_attack', [
+  attackFrame1,
+  attackFrame2,
+  attackFrame3,
+  attackFrame4,
+]);
 
 // Demo 3: JSON Serialization
 console.log('💾 Demo 3: JSON Serialization');
 console.log('==============================');
 
 const animationJSON = {
-    name: walkAnimation.name,
-    frames: walkAnimation.frames.map(frame => ({
-        layerRefs: frame.layerRefs,
-        duration: frame.duration
-    }))
+  name: walkAnimation.name,
+  frames: walkAnimation.frames.map((frame) => ({
+    layerRefs: frame.layerRefs,
+    duration: frame.duration,
+  })),
 };
 
 console.log('JSON Export:');
@@ -90,7 +108,9 @@ console.log('===============================');
 
 console.log('📝 Original Animation:');
 console.log(`   Frames: ${walkAnimation.frames.length}`);
-console.log(`   Duration: ${walkAnimation.frames.reduce((sum, f) => sum + f.duration, 0)}ms`);
+console.log(
+  `   Duration: ${walkAnimation.frames.reduce((sum, f) => sum + f.duration, 0)}ms`,
+);
 
 console.log('\n➕ Adding a new frame...');
 const newFrame = createFrameDemo(['layer1', 'layer8'], 120);
@@ -98,15 +118,23 @@ walkAnimation.frames.push(newFrame);
 
 console.log('📝 Updated Animation:');
 console.log(`   Frames: ${walkAnimation.frames.length}`);
-console.log(`   Duration: ${walkAnimation.frames.reduce((sum, f) => sum + f.duration, 0)}ms`);
+console.log(
+  `   Duration: ${walkAnimation.frames.reduce((sum, f) => sum + f.duration, 0)}ms`,
+);
 
 // Demo 5: Frame Analysis
 console.log('\n🔍 Demo 5: Frame Analysis');
 console.log('=========================');
 
 walkAnimation.frames.forEach((frame, index) => {
-    const percentage = ((frame.duration / walkAnimation.frames.reduce((sum, f) => sum + f.duration, 0)) * 100).toFixed(1);
-    console.log(`Frame ${index + 1}: ${frame.duration}ms (${percentage}% of total)`);
+  const percentage = (
+    (frame.duration /
+      walkAnimation.frames.reduce((sum, f) => sum + f.duration, 0)) *
+    100
+  ).toFixed(1);
+  console.log(
+    `Frame ${index + 1}: ${frame.duration}ms (${percentage}% of total)`,
+  );
 });
 
 console.log('\n✨ Animation model demonstration complete!');

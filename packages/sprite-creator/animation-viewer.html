@@ -1,496 +1,581 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Animation Timeline Viewer</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #1e1e1e;
-            color: #ffffff;
-            margin: 0;
-            padding: 20px;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        h1 {
-            text-align: center;
-            color: #4fc3f7;
-            margin-bottom: 30px;
-        }
-        
-        .animation-viewer {
-            background: #2d2d2d;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 30px;
-            border: 2px solid #4fc3f7;
-        }
-        
-        .animation-title {
-            font-size: 1.5em;
-            margin-bottom: 20px;
-            color: #81c784;
-        }
-        
-        .sprite-canvas {
-            width: 400px;
-            height: 300px;
-            background: #000;
-            border: 2px solid #666;
-            margin: 20px auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            border-radius: 5px;
-        }
-        
-        .sprite-display {
-            font-size: 3em;
-            transition: all 0.1s ease;
-        }
-        
-        .controls {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin: 20px 0;
-        }
-        
-        button {
-            background: #4fc3f7;
-            color: #000;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        
-        button:hover {
-            background: #29b6f6;
-        }
-        
-        button:disabled {
-            background: #666;
-            cursor: not-allowed;
-        }
-        
-        .timeline {
-            background: #333;
-            border-radius: 5px;
-            padding: 15px;
-            margin: 20px 0;
-        }
-        
-        .timeline-track {
-            height: 40px;
-            background: #555;
-            border-radius: 3px;
-            position: relative;
-            margin: 10px 0;
-            overflow: hidden;
-        }
-        
-        .frame-segment {
-            height: 100%;
-            display: inline-block;
-            border-right: 1px solid #777;
-            position: relative;
-            cursor: pointer;
-        }
-        
-        .frame-segment:hover {
-            brightness: 1.2;
-        }
-        
-        .frame-segment.active {
-            border: 2px solid #fff;
-            box-sizing: border-box;
-        }
-        
-        .frame-info {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 0.8em;
-            color: #fff;
-            text-shadow: 1px 1px 2px #000;
-        }
-        
-        .playhead {
-            position: absolute;
-            top: 0;
-            width: 3px;
-            height: 100%;
-            background: #ff5722;
-            transition: left 0.1s ease;
-            z-index: 10;
-        }
-        
-        .animation-info {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 20px;
-            margin: 20px 0;
-        }
-        
-        .info-card {
-            background: #333;
-            padding: 15px;
-            border-radius: 5px;
-            text-align: center;
-        }
-        
-        .info-label {
-            color: #bbb;
-            font-size: 0.9em;
-            margin-bottom: 5px;
-        }
-        
-        .info-value {
-            font-size: 1.2em;
-            color: #4fc3f7;
-            font-weight: bold;
-        }
-        
-        .layer-display {
-            position: absolute;
-            font-size: 1.5em;
-            opacity: 0.8;
-        }
-        
-        .fps-control {
-            margin: 10px 0;
-            text-align: center;
-        }
-        
-        .fps-control input {
-            background: #555;
-            color: #fff;
-            border: 1px solid #777;
-            padding: 5px;
-            border-radius: 3px;
-            width: 60px;
-            text-align: center;
-        }
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: #1e1e1e;
+        color: #ffffff;
+        margin: 0;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        text-align: center;
+        color: #4fc3f7;
+        margin-bottom: 30px;
+      }
+
+      .animation-viewer {
+        background: #2d2d2d;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 30px;
+        border: 2px solid #4fc3f7;
+      }
+
+      .animation-title {
+        font-size: 1.5em;
+        margin-bottom: 20px;
+        color: #81c784;
+      }
+
+      .sprite-canvas {
+        width: 400px;
+        height: 300px;
+        background: #000;
+        border: 2px solid #666;
+        margin: 20px auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        border-radius: 5px;
+      }
+
+      .sprite-display {
+        font-size: 3em;
+        transition: all 0.1s ease;
+      }
+
+      .controls {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin: 20px 0;
+      }
+
+      button {
+        background: #4fc3f7;
+        color: #000;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+
+      button:hover {
+        background: #29b6f6;
+      }
+
+      button:disabled {
+        background: #666;
+        cursor: not-allowed;
+      }
+
+      .timeline {
+        background: #333;
+        border-radius: 5px;
+        padding: 15px;
+        margin: 20px 0;
+      }
+
+      .timeline-track {
+        height: 40px;
+        background: #555;
+        border-radius: 3px;
+        position: relative;
+        margin: 10px 0;
+        overflow: hidden;
+      }
+
+      .frame-segment {
+        height: 100%;
+        display: inline-block;
+        border-right: 1px solid #777;
+        position: relative;
+        cursor: pointer;
+      }
+
+      .frame-segment:hover {
+        brightness: 1.2;
+      }
+
+      .frame-segment.active {
+        border: 2px solid #fff;
+        box-sizing: border-box;
+      }
+
+      .frame-info {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 0.8em;
+        color: #fff;
+        text-shadow: 1px 1px 2px #000;
+      }
+
+      .playhead {
+        position: absolute;
+        top: 0;
+        width: 3px;
+        height: 100%;
+        background: #ff5722;
+        transition: left 0.1s ease;
+        z-index: 10;
+      }
+
+      .animation-info {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 20px;
+        margin: 20px 0;
+      }
+
+      .info-card {
+        background: #333;
+        padding: 15px;
+        border-radius: 5px;
+        text-align: center;
+      }
+
+      .info-label {
+        color: #bbb;
+        font-size: 0.9em;
+        margin-bottom: 5px;
+      }
+
+      .info-value {
+        font-size: 1.2em;
+        color: #4fc3f7;
+        font-weight: bold;
+      }
+
+      .layer-display {
+        position: absolute;
+        font-size: 1.5em;
+        opacity: 0.8;
+      }
+
+      .fps-control {
+        margin: 10px 0;
+        text-align: center;
+      }
+
+      .fps-control input {
+        background: #555;
+        color: #fff;
+        border: 1px solid #777;
+        padding: 5px;
+        border-radius: 3px;
+        width: 60px;
+        text-align: center;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <h1>🎬 Animation Timeline Viewer</h1>
-        
-        <div class="animation-viewer" id="walkViewer">
-            <div class="animation-title">🚶 Walking Animation</div>
-            
-            <div class="sprite-canvas">
-                <div class="sprite-display" id="walkSprite">🧍</div>
-                <div class="layer-display" id="walkLayers" style="top: 10px; right: 10px; font-size: 0.8em;"></div>
-            </div>
-            
-            <div class="controls">
-                <button onclick="playAnimation('walk')">▶️ Play</button>
-                <button onclick="pauseAnimation('walk')">⏸️ Pause</button>
-                <button onclick="stopAnimation('walk')">⏹️ Stop</button>
-                <button onclick="stepFrame('walk', -1)">⏮️ Prev</button>
-                <button onclick="stepFrame('walk', 1)">⏭️ Next</button>
-            </div>
-            
-            <div class="fps-control">
-                <label>Speed: </label>
-                <input type="range" min="0.1" max="3" step="0.1" value="1" onchange="setSpeed('walk', this.value)">
-                <span id="walkSpeed">1x</span>
-            </div>
-            
-            <div class="timeline">
-                <div class="timeline-track" id="walkTimeline">
-                    <div class="playhead" id="walkPlayhead"></div>
-                </div>
-            </div>
-            
-            <div class="animation-info">
-                <div class="info-card">
-                    <div class="info-label">Current Frame</div>
-                    <div class="info-value" id="walkCurrentFrame">1</div>
-                </div>
-                <div class="info-card">
-                    <div class="info-label">Total Frames</div>
-                    <div class="info-value" id="walkTotalFrames">4</div>
-                </div>
-                <div class="info-card">
-                    <div class="info-label">Duration</div>
-                    <div class="info-value" id="walkDuration">400ms</div>
-                </div>
-            </div>
+      <h1>🎬 Animation Timeline Viewer</h1>
+
+      <div class="animation-viewer" id="walkViewer">
+        <div class="animation-title">🚶 Walking Animation</div>
+
+        <div class="sprite-canvas">
+          <div class="sprite-display" id="walkSprite">🧍</div>
+          <div
+            class="layer-display"
+            id="walkLayers"
+            style="top: 10px; right: 10px; font-size: 0.8em"
+          ></div>
         </div>
-        
-        <div class="animation-viewer" id="attackViewer">
-            <div class="animation-title">⚔️ Attack Animation</div>
-            
-            <div class="sprite-canvas">
-                <div class="sprite-display" id="attackSprite">🧍</div>
-                <div class="layer-display" id="attackLayers" style="top: 10px; right: 10px; font-size: 0.8em;"></div>
-            </div>
-            
-            <div class="controls">
-                <button onclick="playAnimation('attack')">▶️ Play</button>
-                <button onclick="pauseAnimation('attack')">⏸️ Pause</button>
-                <button onclick="stopAnimation('attack')">⏹️ Stop</button>
-                <button onclick="stepFrame('attack', -1)">⏮️ Prev</button>
-                <button onclick="stepFrame('attack', 1)">⏭️ Next</button>
-            </div>
-            
-            <div class="fps-control">
-                <label>Speed: </label>
-                <input type="range" min="0.1" max="3" step="0.1" value="1" onchange="setSpeed('attack', this.value)">
-                <span id="attackSpeed">1x</span>
-            </div>
-            
-            <div class="timeline">
-                <div class="timeline-track" id="attackTimeline">
-                    <div class="playhead" id="attackPlayhead"></div>
-                </div>
-            </div>
-            
-            <div class="animation-info">
-                <div class="info-card">
-                    <div class="info-label">Current Frame</div>
-                    <div class="info-value" id="attackCurrentFrame">1</div>
-                </div>
-                <div class="info-card">
-                    <div class="info-label">Total Frames</div>
-                    <div class="info-value" id="attackTotalFrames">4</div>
-                </div>
-                <div class="info-card">
-                    <div class="info-label">Duration</div>
-                    <div class="info-value" id="attackDuration">250ms</div>
-                </div>
-            </div>
+
+        <div class="controls">
+          <button onclick="playAnimation('walk')">▶️ Play</button>
+          <button onclick="pauseAnimation('walk')">⏸️ Pause</button>
+          <button onclick="stopAnimation('walk')">⏹️ Stop</button>
+          <button onclick="stepFrame('walk', -1)">⏮️ Prev</button>
+          <button onclick="stepFrame('walk', 1)">⏭️ Next</button>
         </div>
+
+        <div class="fps-control">
+          <label>Speed: </label>
+          <input
+            type="range"
+            min="0.1"
+            max="3"
+            step="0.1"
+            value="1"
+            onchange="setSpeed('walk', this.value)"
+          />
+          <span id="walkSpeed">1x</span>
+        </div>
+
+        <div class="timeline">
+          <div class="timeline-track" id="walkTimeline">
+            <div class="playhead" id="walkPlayhead"></div>
+          </div>
+        </div>
+
+        <div class="animation-info">
+          <div class="info-card">
+            <div class="info-label">Current Frame</div>
+            <div class="info-value" id="walkCurrentFrame">1</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Total Frames</div>
+            <div class="info-value" id="walkTotalFrames">4</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Duration</div>
+            <div class="info-value" id="walkDuration">400ms</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="animation-viewer" id="attackViewer">
+        <div class="animation-title">⚔️ Attack Animation</div>
+
+        <div class="sprite-canvas">
+          <div class="sprite-display" id="attackSprite">🧍</div>
+          <div
+            class="layer-display"
+            id="attackLayers"
+            style="top: 10px; right: 10px; font-size: 0.8em"
+          ></div>
+        </div>
+
+        <div class="controls">
+          <button onclick="playAnimation('attack')">▶️ Play</button>
+          <button onclick="pauseAnimation('attack')">⏸️ Pause</button>
+          <button onclick="stopAnimation('attack')">⏹️ Stop</button>
+          <button onclick="stepFrame('attack', -1)">⏮️ Prev</button>
+          <button onclick="stepFrame('attack', 1)">⏭️ Next</button>
+        </div>
+
+        <div class="fps-control">
+          <label>Speed: </label>
+          <input
+            type="range"
+            min="0.1"
+            max="3"
+            step="0.1"
+            value="1"
+            onchange="setSpeed('attack', this.value)"
+          />
+          <span id="attackSpeed">1x</span>
+        </div>
+
+        <div class="timeline">
+          <div class="timeline-track" id="attackTimeline">
+            <div class="playhead" id="attackPlayhead"></div>
+          </div>
+        </div>
+
+        <div class="animation-info">
+          <div class="info-card">
+            <div class="info-label">Current Frame</div>
+            <div class="info-value" id="attackCurrentFrame">1</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Total Frames</div>
+            <div class="info-value" id="attackTotalFrames">4</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Duration</div>
+            <div class="info-value" id="attackDuration">250ms</div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script>
-        // Animation data from our model
-        const animations = {
-            walk: {
-                name: 'walk_cycle',
-                frames: [
-                    { layerRefs: ['layer1', 'layer2'], duration: 100, sprite: '🚶', colors: ['#4fc3f7', '#81c784'] },
-                    { layerRefs: ['layer1', 'layer3'], duration: 100, sprite: '🚶‍➡️', colors: ['#4fc3f7', '#ffb74d'] },
-                    { layerRefs: ['layer1', 'layer4'], duration: 100, sprite: '🚶', colors: ['#4fc3f7', '#f06292'] },
-                    { layerRefs: ['layer1', 'layer3'], duration: 100, sprite: '🚶‍➡️', colors: ['#4fc3f7', '#ffb74d'] }
-                ]
+      // Animation data from our model
+      const animations = {
+        walk: {
+          name: 'walk_cycle',
+          frames: [
+            {
+              layerRefs: ['layer1', 'layer2'],
+              duration: 100,
+              sprite: '🚶',
+              colors: ['#4fc3f7', '#81c784'],
             },
-            attack: {
-                name: 'sword_attack',
-                frames: [
-                    { layerRefs: ['layer1', 'layer2'], duration: 50, sprite: '🧍', colors: ['#4fc3f7', '#81c784'] },
-                    { layerRefs: ['layer1', 'layer5'], duration: 25, sprite: '🤺', colors: ['#4fc3f7', '#ff7043'] },
-                    { layerRefs: ['layer1', 'layer6'], duration: 25, sprite: '⚔️', colors: ['#4fc3f7', '#ef5350'] },
-                    { layerRefs: ['layer1', 'layer7'], duration: 150, sprite: '🧍', colors: ['#4fc3f7', '#81c784'] }
-                ]
-            }
+            {
+              layerRefs: ['layer1', 'layer3'],
+              duration: 100,
+              sprite: '🚶‍➡️',
+              colors: ['#4fc3f7', '#ffb74d'],
+            },
+            {
+              layerRefs: ['layer1', 'layer4'],
+              duration: 100,
+              sprite: '🚶',
+              colors: ['#4fc3f7', '#f06292'],
+            },
+            {
+              layerRefs: ['layer1', 'layer3'],
+              duration: 100,
+              sprite: '🚶‍➡️',
+              colors: ['#4fc3f7', '#ffb74d'],
+            },
+          ],
+        },
+        attack: {
+          name: 'sword_attack',
+          frames: [
+            {
+              layerRefs: ['layer1', 'layer2'],
+              duration: 50,
+              sprite: '🧍',
+              colors: ['#4fc3f7', '#81c784'],
+            },
+            {
+              layerRefs: ['layer1', 'layer5'],
+              duration: 25,
+              sprite: '🤺',
+              colors: ['#4fc3f7', '#ff7043'],
+            },
+            {
+              layerRefs: ['layer1', 'layer6'],
+              duration: 25,
+              sprite: '⚔️',
+              colors: ['#4fc3f7', '#ef5350'],
+            },
+            {
+              layerRefs: ['layer1', 'layer7'],
+              duration: 150,
+              sprite: '🧍',
+              colors: ['#4fc3f7', '#81c784'],
+            },
+          ],
+        },
+      };
+
+      const animationStates = {};
+
+      // Initialize animations
+      Object.keys(animations).forEach((animName) => {
+        animationStates[animName] = {
+          currentFrame: 0,
+          isPlaying: false,
+          playStartTime: 0,
+          elapsedTime: 0,
+          speed: 1,
+          interval: null,
         };
-        
-        const animationStates = {};
-        
-        // Initialize animations
-        Object.keys(animations).forEach(animName => {
-            animationStates[animName] = {
-                currentFrame: 0,
-                isPlaying: false,
-                playStartTime: 0,
-                elapsedTime: 0,
-                speed: 1,
-                interval: null
-            };
-            initializeTimeline(animName);
-            updateDisplay(animName);
+        initializeTimeline(animName);
+        updateDisplay(animName);
+      });
+
+      function initializeTimeline(animName) {
+        const timeline = document.getElementById(animName + 'Timeline');
+        const animation = animations[animName];
+        const totalDuration = animation.frames.reduce(
+          (sum, frame) => sum + frame.duration,
+          0,
+        );
+
+        // Clear existing segments
+        timeline.innerHTML =
+          '<div class="playhead" id="' + animName + 'Playhead"></div>';
+
+        // Create frame segments
+        animation.frames.forEach((frame, index) => {
+          const segment = document.createElement('div');
+          segment.className = 'frame-segment';
+          segment.style.width = (frame.duration / totalDuration) * 100 + '%';
+          segment.style.background = frame.colors[1] || '#666';
+
+          const info = document.createElement('div');
+          info.className = 'frame-info';
+          info.textContent = `F${index + 1}`;
+          segment.appendChild(info);
+
+          segment.onclick = () => jumpToFrame(animName, index);
+          timeline.appendChild(segment);
         });
-        
-        function initializeTimeline(animName) {
-            const timeline = document.getElementById(animName + 'Timeline');
-            const animation = animations[animName];
-            const totalDuration = animation.frames.reduce((sum, frame) => sum + frame.duration, 0);
-            
-            // Clear existing segments
-            timeline.innerHTML = '<div class="playhead" id="' + animName + 'Playhead"></div>';
-            
-            // Create frame segments
-            animation.frames.forEach((frame, index) => {
-                const segment = document.createElement('div');
-                segment.className = 'frame-segment';
-                segment.style.width = (frame.duration / totalDuration * 100) + '%';
-                segment.style.background = frame.colors[1] || '#666';
-                
-                const info = document.createElement('div');
-                info.className = 'frame-info';
-                info.textContent = `F${index + 1}`;
-                segment.appendChild(info);
-                
-                segment.onclick = () => jumpToFrame(animName, index);
-                timeline.appendChild(segment);
-            });
+      }
+
+      function updateDisplay(animName) {
+        const state = animationStates[animName];
+        const animation = animations[animName];
+        const currentFrame = animation.frames[state.currentFrame];
+
+        // Update sprite display
+        const spriteElement = document.getElementById(animName + 'Sprite');
+        spriteElement.textContent = currentFrame.sprite;
+        spriteElement.style.color = currentFrame.colors[0] || '#fff';
+
+        // Update layer info
+        const layersElement = document.getElementById(animName + 'Layers');
+        layersElement.textContent = currentFrame.layerRefs.join(' + ');
+
+        // Update frame counter
+        document.getElementById(animName + 'CurrentFrame').textContent =
+          state.currentFrame + 1;
+
+        // Update timeline segments
+        const segments = document.querySelectorAll(
+          `#${animName}Timeline .frame-segment`,
+        );
+        segments.forEach((segment, index) => {
+          segment.classList.toggle('active', index === state.currentFrame);
+        });
+
+        // Update playhead position
+        updatePlayhead(animName);
+      }
+
+      function updatePlayhead(animName) {
+        const state = animationStates[animName];
+        const animation = animations[animName];
+        const totalDuration = animation.frames.reduce(
+          (sum, frame) => sum + frame.duration,
+          0,
+        );
+
+        let frameStartTime = 0;
+        for (let i = 0; i < state.currentFrame; i++) {
+          frameStartTime += animation.frames[i].duration;
         }
-        
-        function updateDisplay(animName) {
-            const state = animationStates[animName];
-            const animation = animations[animName];
-            const currentFrame = animation.frames[state.currentFrame];
-            
-            // Update sprite display
-            const spriteElement = document.getElementById(animName + 'Sprite');
-            spriteElement.textContent = currentFrame.sprite;
-            spriteElement.style.color = currentFrame.colors[0] || '#fff';
-            
-            // Update layer info
-            const layersElement = document.getElementById(animName + 'Layers');
-            layersElement.textContent = currentFrame.layerRefs.join(' + ');
-            
-            // Update frame counter
-            document.getElementById(animName + 'CurrentFrame').textContent = state.currentFrame + 1;
-            
-            // Update timeline segments
-            const segments = document.querySelectorAll(`#${animName}Timeline .frame-segment`);
-            segments.forEach((segment, index) => {
-                segment.classList.toggle('active', index === state.currentFrame);
-            });
-            
-            // Update playhead position
+
+        const frameProgress = state.isPlaying
+          ? Math.min(
+              state.elapsedTime - frameStartTime,
+              animation.frames[state.currentFrame].duration,
+            )
+          : 0;
+
+        const totalProgress = frameStartTime + frameProgress;
+        const percentage = (totalProgress / totalDuration) * 100;
+
+        const playhead = document.getElementById(animName + 'Playhead');
+        playhead.style.left = percentage + '%';
+      }
+
+      function playAnimation(animName) {
+        const state = animationStates[animName];
+
+        if (state.isPlaying) return;
+
+        state.isPlaying = true;
+        state.playStartTime = Date.now() - state.elapsedTime;
+
+        state.interval = setInterval(() => {
+          state.elapsedTime = (Date.now() - state.playStartTime) * state.speed;
+
+          const animation = animations[animName];
+          const totalDuration = animation.frames.reduce(
+            (sum, frame) => sum + frame.duration,
+            0,
+          );
+
+          if (state.elapsedTime >= totalDuration) {
+            // Loop animation
+            state.elapsedTime = 0;
+            state.playStartTime = Date.now();
+          }
+
+          // Find current frame based on elapsed time
+          let currentTime = 0;
+          let newFrame = 0;
+
+          for (let i = 0; i < animation.frames.length; i++) {
+            if (
+              state.elapsedTime >= currentTime &&
+              state.elapsedTime < currentTime + animation.frames[i].duration
+            ) {
+              newFrame = i;
+              break;
+            }
+            currentTime += animation.frames[i].duration;
+          }
+
+          if (newFrame !== state.currentFrame) {
+            state.currentFrame = newFrame;
+            updateDisplay(animName);
+          } else {
             updatePlayhead(animName);
+          }
+        }, 16); // ~60fps
+      }
+
+      function pauseAnimation(animName) {
+        const state = animationStates[animName];
+        state.isPlaying = false;
+        if (state.interval) {
+          clearInterval(state.interval);
+          state.interval = null;
         }
-        
-        function updatePlayhead(animName) {
-            const state = animationStates[animName];
-            const animation = animations[animName];
-            const totalDuration = animation.frames.reduce((sum, frame) => sum + frame.duration, 0);
-            
-            let frameStartTime = 0;
-            for (let i = 0; i < state.currentFrame; i++) {
-                frameStartTime += animation.frames[i].duration;
-            }
-            
-            const frameProgress = state.isPlaying ? 
-                Math.min(state.elapsedTime - frameStartTime, animation.frames[state.currentFrame].duration) : 0;
-            
-            const totalProgress = frameStartTime + frameProgress;
-            const percentage = (totalProgress / totalDuration) * 100;
-            
-            const playhead = document.getElementById(animName + 'Playhead');
-            playhead.style.left = percentage + '%';
+      }
+
+      function stopAnimation(animName) {
+        pauseAnimation(animName);
+        const state = animationStates[animName];
+        state.currentFrame = 0;
+        state.elapsedTime = 0;
+        updateDisplay(animName);
+      }
+
+      function stepFrame(animName, direction) {
+        pauseAnimation(animName);
+        const state = animationStates[animName];
+        const animation = animations[animName];
+
+        state.currentFrame = Math.max(
+          0,
+          Math.min(animation.frames.length - 1, state.currentFrame + direction),
+        );
+        state.elapsedTime = 0;
+
+        // Calculate elapsed time to current frame
+        for (let i = 0; i < state.currentFrame; i++) {
+          state.elapsedTime += animation.frames[i].duration;
         }
-        
-        function playAnimation(animName) {
-            const state = animationStates[animName];
-            
-            if (state.isPlaying) return;
-            
-            state.isPlaying = true;
-            state.playStartTime = Date.now() - state.elapsedTime;
-            
-            state.interval = setInterval(() => {
-                state.elapsedTime = (Date.now() - state.playStartTime) * state.speed;
-                
-                const animation = animations[animName];
-                const totalDuration = animation.frames.reduce((sum, frame) => sum + frame.duration, 0);
-                
-                if (state.elapsedTime >= totalDuration) {
-                    // Loop animation
-                    state.elapsedTime = 0;
-                    state.playStartTime = Date.now();
-                }
-                
-                // Find current frame based on elapsed time
-                let currentTime = 0;
-                let newFrame = 0;
-                
-                for (let i = 0; i < animation.frames.length; i++) {
-                    if (state.elapsedTime >= currentTime && state.elapsedTime < currentTime + animation.frames[i].duration) {
-                        newFrame = i;
-                        break;
-                    }
-                    currentTime += animation.frames[i].duration;
-                }
-                
-                if (newFrame !== state.currentFrame) {
-                    state.currentFrame = newFrame;
-                    updateDisplay(animName);
-                } else {
-                    updatePlayhead(animName);
-                }
-            }, 16); // ~60fps
+
+        updateDisplay(animName);
+      }
+
+      function jumpToFrame(animName, frameIndex) {
+        pauseAnimation(animName);
+        const state = animationStates[animName];
+        const animation = animations[animName];
+
+        state.currentFrame = frameIndex;
+        state.elapsedTime = 0;
+
+        // Calculate elapsed time to current frame
+        for (let i = 0; i < state.currentFrame; i++) {
+          state.elapsedTime += animation.frames[i].duration;
         }
-        
-        function pauseAnimation(animName) {
-            const state = animationStates[animName];
-            state.isPlaying = false;
-            if (state.interval) {
-                clearInterval(state.interval);
-                state.interval = null;
-            }
+
+        updateDisplay(animName);
+      }
+
+      function setSpeed(animName, speed) {
+        const state = animationStates[animName];
+        state.speed = parseFloat(speed);
+        document.getElementById(animName + 'Speed').textContent = speed + 'x';
+
+        if (state.isPlaying) {
+          // Adjust play start time to maintain current position
+          const currentElapsed = state.elapsedTime;
+          state.playStartTime = Date.now() - currentElapsed / state.speed;
         }
-        
-        function stopAnimation(animName) {
-            pauseAnimation(animName);
-            const state = animationStates[animName];
-            state.currentFrame = 0;
-            state.elapsedTime = 0;
-            updateDisplay(animName);
-        }
-        
-        function stepFrame(animName, direction) {
-            pauseAnimation(animName);
-            const state = animationStates[animName];
-            const animation = animations[animName];
-            
-            state.currentFrame = Math.max(0, Math.min(animation.frames.length - 1, state.currentFrame + direction));
-            state.elapsedTime = 0;
-            
-            // Calculate elapsed time to current frame
-            for (let i = 0; i < state.currentFrame; i++) {
-                state.elapsedTime += animation.frames[i].duration;
-            }
-            
-            updateDisplay(animName);
-        }
-        
-        function jumpToFrame(animName, frameIndex) {
-            pauseAnimation(animName);
-            const state = animationStates[animName];
-            const animation = animations[animName];
-            
-            state.currentFrame = frameIndex;
-            state.elapsedTime = 0;
-            
-            // Calculate elapsed time to current frame
-            for (let i = 0; i < state.currentFrame; i++) {
-                state.elapsedTime += animation.frames[i].duration;
-            }
-            
-            updateDisplay(animName);
-        }
-        
-        function setSpeed(animName, speed) {
-            const state = animationStates[animName];
-            state.speed = parseFloat(speed);
-            document.getElementById(animName + 'Speed').textContent = speed + 'x';
-            
-            if (state.isPlaying) {
-                // Adjust play start time to maintain current position
-                const currentElapsed = state.elapsedTime;
-                state.playStartTime = Date.now() - (currentElapsed / state.speed);
-            }
-        }
-        
-        // Auto-play walking animation on load
-        setTimeout(() => playAnimation('walk'), 500);
+      }
+
+      // Auto-play walking animation on load
+      setTimeout(() => playAnimation('walk'), 500);
     </script>
-</body>
+  </body>
 </html>

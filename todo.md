@@ -17,8 +17,8 @@ date: 2025-05-24
 - [x] **Palette Utilities** – 256-color palette ops (Plan 5, SPR-FR-5/6)
 - [x] **Layer Bitmap Encoding** – RLE encode/decode (Plan 6, SPR-FR-2)
 - [x] **Animation Timeline Model** – frames & durations (Plan 7, SPR-FR-3)
-- [ ] **Undo/Redo Service** – command stack (Plan 8, SPR-FR-9)
-- [ ] **Autosave Service** – write/prune snapshots (Plan 9, SPR-FR-9)
+- [x] **Undo/Redo Service** – command stack (Plan 8, SPR-FR-9)
+- [x] **Autosave Service** – write/prune snapshots (Plan 9, SPR-FR-9)
 
 ### Phase 3 – Canvas & Editing Tools
 - [ ] **Canvas Renderer Skeleton** – checkerboard grid (Plan 10, SPR-FR-1)
