@@ -48,12 +48,12 @@ export const LayersPanel: React.FC<LayersPanelProps> = ({
   selectedLayerId,
   onLayerSelect,
   onLayerAdd,
-  onLayerDelete,
+  onLayerDelete: _onLayerDelete,
   onLayerVisibilityToggle,
   onLayerLockToggle,
   onLayerOpacityChange,
-  onLayerRename,
-  onLayerReorder,
+  onLayerRename: _onLayerRename,
+  onLayerReorder: _onLayerReorder,
   onLayerMergeDown,
 }) => {
   const panelRef = useRef<HTMLDivElement>(null);

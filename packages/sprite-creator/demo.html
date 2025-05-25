@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan 12: Onion-Skin Drawing Demo</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/konva@9.3.6/konva.min.js"></script>
+    <script src="https://unpkg.com/react-konva@18.2.10/lib/ReactKonva.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .content {
+            padding: 0;
+        }
+        .checkerboard-bg {
+            background-image: 
+                linear-gradient(45deg, #f0f0f0 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #f0f0f0 75%),
+                linear-gradient(45deg, #f0f0f0 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #f0f0f0 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 0, 10px 10px, 10px 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧅 Plan 12: Onion-Skin Overlay Demo</h1>
+            <p>Interactive demonstration of ghost frame functionality for animation staging</p>
+        </div>
+        <div class="content">
+            <div id="demo-root"></div>
+        </div>
+    </div>
+
+    <script type="text/babel">
+        // Simplified versions of our models for demo
+        class LayerBitmap {
+            constructor(width, height) {
+                this.width = width;
+                this.height = height;
+                this.pixels = new Map();
+            }
+
+            setPixel(x, y, color) {
+                if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
+                    this.pixels.set(`${x},${y}`, color);
+                }
+            }
+
+            getPixel(x, y) {
+                return this.pixels.get(`${x},${y}`) || null;
+            }
+
+            getWidth() { return this.width; }
+            getHeight() { return this.height; }
+        }
+
+        // Simplified PixelCanvas component
+        const PixelCanvas = ({ 
+            width, 
+            height, 
+            pixelSize = 24, 
+            pixels = [], 
+            onPixelClick,
+            onionSkinEnabled = false,
+            onionSkinData = [],
+            onionSkinOpacity = 0.5 
+        }) => {
+            const canvasWidth = width * pixelSize;
+            const canvasHeight = height * pixelSize;
+
+            // Create checkerboard background
+            const checkerboardRects = [];
+            for (let y = 0; y < height; y++) {
+                for (let x = 0; x < width; x++) {
+                    const isEven = (x + y) % 2 === 0;
+                    checkerboardRects.push(
+                        <rect
+                            key={`checker-${x}-${y}`}
+                            x={x * pixelSize}
+                            y={y * pixelSize}
+                            width={pixelSize}
+                            height={pixelSize}
+                            fill={isEven ? '#ffffff' : '#cccccc'}
+                        />
+                    );
+                }
+            }
+
+            // Create onion-skin pixels
+            const onionSkinRects = onionSkinEnabled ? onionSkinData.map(({ x, y, color }, index) => (
+                <rect
+                    key={`onion-${index}`}
+                    x={x * pixelSize}
+                    y={y * pixelSize}
+                    width={pixelSize}
+                    height={pixelSize}
+                    fill={color}
+                    opacity={onionSkinOpacity}
+                />
+            )) : [];
+
+            // Create current frame pixels
+            const pixelRects = pixels.map(({ x, y, color }, index) => (
+                <rect
+                    key={`pixel-${index}`}
+                    x={x * pixelSize}
+                    y={y * pixelSize}
+                    width={pixelSize}
+                    height={pixelSize}
+                    fill={color}
+                />
+            ));
+
+            return (
+                <svg 
+                    width={canvasWidth} 
+                    height={canvasHeight}
+                    style={{ border: '2px solid #333', display: 'block' }}
+                    onClick={(e) => {
+                        if (onPixelClick) {
+                            const rect = e.currentTarget.getBoundingClientRect();
+                            const x = Math.floor((e.clientX - rect.left) / pixelSize);
+                            const y = Math.floor((e.clientY - rect.top) / pixelSize);
+                            onPixelClick(x, y);
+                        }
+                    }}
+                >
+                    {checkerboardRects}
+                    {onionSkinRects}
+                    {pixelRects}
+                </svg>
+            );
+        };
+
+        // Main demo component
+        const OnionSkinDemo = () => {
+            const [currentFrameIndex, setCurrentFrameIndex] = React.useState(0);
+            const [onionSkinEnabled, setOnionSkinEnabled] = React.useState(true);
+            const [onionSkinOpacity, setOnionSkinOpacity] = React.useState(0.5);
+            const [selectedColor, setSelectedColor] = React.useState('#ff0000');
+
+            // Initialize frames with sample data
+            const [frameBitmaps, setFrameBitmaps] = React.useState(() => {
+                const frames = [new LayerBitmap(16, 16), new LayerBitmap(16, 16), new LayerBitmap(16, 16)];
+                
+                // Frame 0: Simple smiley face
+                frames[0].setPixel(5, 5, '#000000'); // Left eye
+                frames[0].setPixel(10, 5, '#000000'); // Right eye
+                frames[0].setPixel(6, 9, '#000000'); // Mouth start
+                frames[0].setPixel(7, 10, '#000000');
+                frames[0].setPixel(8, 10, '#000000');
+                frames[0].setPixel(9, 9, '#000000'); // Mouth end
+
+                // Frame 1: Winking face
+                frames[1].setPixel(5, 4, '#000000'); // Left eye wink (higher)
+                frames[1].setPixel(6, 5, '#000000'); // Left eye wink
+                frames[1].setPixel(10, 5, '#000000'); // Right eye
+                frames[1].setPixel(6, 9, '#000000'); // Mouth
+                frames[1].setPixel(7, 10, '#000000');
+                frames[1].setPixel(8, 10, '#000000');
+                frames[1].setPixel(9, 9, '#000000');
+
+                // Frame 2: Open mouth surprise
+                frames[2].setPixel(5, 5, '#000000'); // Left eye
+                frames[2].setPixel(10, 5, '#000000'); // Right eye
+                frames[2].setPixel(7, 9, '#000000'); // Open mouth
+                frames[2].setPixel(8, 9, '#000000');
+                frames[2].setPixel(7, 10, '#000000');
+                frames[2].setPixel(8, 10, '#000000');
+
+                return frames;
+            });
+
+            const getCurrentFramePixels = () => {
+                const currentBitmap = frameBitmaps[currentFrameIndex];
+                const pixels = [];
+                for (let y = 0; y < currentBitmap.getHeight(); y++) {
+                    for (let x = 0; x < currentBitmap.getWidth(); x++) {
+                        const color = currentBitmap.getPixel(x, y);
+                        if (color) {
+                            pixels.push({ x, y, color });
+                        }
+                    }
+                }
+                return pixels;
+            };
+
+            const getOnionSkinPixels = () => {
+                const pixels = [];
+                
+                // Show previous frame if available
+                if (currentFrameIndex > 0) {
+                    const prevBitmap = frameBitmaps[currentFrameIndex - 1];
+                    for (let y = 0; y < prevBitmap.getHeight(); y++) {
+                        for (let x = 0; x < prevBitmap.getWidth(); x++) {
+                            const color = prevBitmap.getPixel(x, y);
+                            if (color) {
+                                pixels.push({ x, y, color });
+                            }
+                        }
+                    }
+                }
+
+                // Show next frame if available
+                if (currentFrameIndex < frameBitmaps.length - 1) {
+                    const nextBitmap = frameBitmaps[currentFrameIndex + 1];
+                    for (let y = 0; y < nextBitmap.getHeight(); y++) {
+                        for (let x = 0; x < nextBitmap.getWidth(); x++) {
+                            const color = nextBitmap.getPixel(x, y);
+                            if (color) {
+                                pixels.push({ x, y, color });
+                            }
+                        }
+                    }
+                }
+
+                return pixels;
+            };
+
+            const handlePixelClick = (x, y) => {
+                const newFrames = [...frameBitmaps];
+                newFrames[currentFrameIndex].setPixel(x, y, selectedColor);
+                setFrameBitmaps(newFrames);
+            };
+
+            const colors = [
+                '#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff',
+                '#ffffff', '#000000', '#808080', '#ffa500', '#800080', '#008000',
+            ];
+
+            return (
+                <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+                    <h2>🧅 Interactive Onion-Skin Drawing Demo</h2>
+                    <p>Click on the canvas to draw pixels and see ghost frames from adjacent animation frames!</p>
+
+                    <div style={{ display: 'flex', gap: '20px', marginBottom: '20px' }}>
+                        <div>
+                            <h3>Canvas</h3>
+                            <PixelCanvas
+                                width={16}
+                                height={16}
+                                pixels={getCurrentFramePixels()}
+                                onPixelClick={handlePixelClick}
+                                onionSkinEnabled={onionSkinEnabled}
+                                onionSkinData={getOnionSkinPixels()}
+                                onionSkinOpacity={onionSkinOpacity}
+                            />
+                        </div>
+
+                        <div>
+                            <h3>Animation Timeline</h3>
+                            <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
+                                {frameBitmaps.map((_, index) => (
+                                    <button
+                                        key={index}
+                                        onClick={() => setCurrentFrameIndex(index)}
+                                        style={{
+                                            padding: '10px 15px',
+                                            backgroundColor: currentFrameIndex === index ? '#4CAF50' : '#f0f0f0',
+                                            color: currentFrameIndex === index ? 'white' : 'black',
+                                            border: '1px solid #ccc',
+                                            borderRadius: '5px',
+                                            cursor: 'pointer',
+                                        }}
+                                    >
+                                        Frame {index + 1}
+                                    </button>
+                                ))}
+                            </div>
+
+                            <h4>Onion-Skin Controls</h4>
+                            <div style={{ marginBottom: '20px' }}>
+                                <label style={{ display: 'block', marginBottom: '10px' }}>
+                                    <input
+                                        type="checkbox"
+                                        checked={onionSkinEnabled}
+                                        onChange={(e) => setOnionSkinEnabled(e.target.checked)}
+                                    />
+                                    <span style={{ marginLeft: '8px' }}>Enable Onion-Skin Overlay</span>
+                                </label>
+                                <label style={{ display: 'block' }}>
+                                    <span>Opacity: {Math.round(onionSkinOpacity * 100)}%</span>
+                                    <input
+                                        type="range"
+                                        min="0.1"
+                                        max="1"
+                                        step="0.1"
+                                        value={onionSkinOpacity}
+                                        onChange={(e) => setOnionSkinOpacity(parseFloat(e.target.value))}
+                                        style={{ marginLeft: '8px', width: '100px' }}
+                                    />
+                                </label>
+                            </div>
+
+                            <div>
+                                <h4>Color Palette</h4>
+                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '4px', maxWidth: '120px' }}>
+                                    {colors.map((color) => (
+                                        <button
+                                            key={color}
+                                            onClick={() => setSelectedColor(color)}
+                                            style={{
+                                                width: '24px',
+                                                height: '24px',
+                                                backgroundColor: color,
+                                                border: selectedColor === color ? '3px solid #333' : '1px solid #ccc',
+                                                borderRadius: '3px',
+                                                cursor: 'pointer',
+                                            }}
+                                            title={color}
+                                        />
+                                    ))}
+                                </div>
+                                <p style={{ fontSize: '12px', color: '#666' }}>
+                                    Selected: {selectedColor}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style={{ marginTop: '20px', padding: '15px', backgroundColor: '#f5f5f5', borderRadius: '5px' }}>
+                        <h4>🎯 Plan 12 Features Demonstrated:</h4>
+                        <ul style={{ margin: '10px 0', paddingLeft: '20px' }}>
+                            <li>✅ Onion-skin overlay rendering of adjacent animation frames</li>
+                            <li>✅ Toggle to enable/disable onion-skin display</li>
+                            <li>✅ Configurable opacity for ghost frame visibility</li>
+                            <li>✅ Visual distinction between current frame and ghost frames</li>
+                            <li>✅ Multi-frame animation timeline navigation</li>
+                            <li>✅ Real-time onion-skin updates when switching frames</li>
+                        </ul>
+                        <p style={{ fontSize: '14px', color: '#666', margin: '10px 0 0 0' }}>
+                            🧅 <strong>Onion skinning</strong> helps animators see how the current frame relates to previous and next frames,
+                            making it easier to create smooth animation transitions.
+                        </p>
+                    </div>
+                </div>
+            );
+        };
+
+        // Render the demo
+        ReactDOM.render(<OnionSkinDemo />, document.getElementById('demo-root'));
+    </script>
+</body>
+</html>

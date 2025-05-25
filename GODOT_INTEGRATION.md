@@ -287,22 +287,35 @@ res://
 
 ## 📋 Implementation Roadmap
 
-### Immediate Focus (Phase 2 Completion)
-- **Plan 8**: Undo/Redo Service (foundation for export workflow)
-- **Plan 9**: Autosave Service (triggers export on save)
+### ✅ Completed Foundation (Phase 2 & Early Phase 3)
 
-### Next Priority (Phase 5: Exporters)
+- **✅ Plan 8**: Undo/Redo Service - Command pattern with 100+ operation support
+- **✅ Plan 9**: Autosave Service - 60s snapshots with recovery functionality
+- **✅ Plan 10**: Canvas Renderer Skeleton - Checkerboard grid with react-konva integration
+- **✅ Plan 11**: Draw Pixel Action - Mouse input to LayerBitmap integration with real-time rendering
+- **✅ Plan 12**: Onion-Skin Overlay - Ghost frame preview with configurable opacity, multi-frame navigation, and interactive demo
+
+### 🚧 Current Focus (Phase 3: Canvas & Editing Tools)
+
+- **Plan 13**: Mirror Drawing Toggle - Symmetric pixel placement
+- **Plan 14**: Layers Panel - Layer management UI
+- **Plan 15**: Palette Panel - Color selection and ASE import
+- **Plan 16**: Random Sprite Generator - Procedural sprite creation
+
+### 🎯 Next Priority (Phase 5: Godot Exporters)
+
 - **Plan 21**: PNG Sheet Exporter → Direct Godot texture compatibility
 - **Plan 22**: SpriteFrames .tres Exporter → Native Godot animation resource
 - **Plan 23**: Export Workflow Integration → ProjectStore sync
 - **Plan 24**: Godot Sync Addon → Real-time project updates
 
 ### Success Criteria
+
 ✅ **Zero Manual Steps**: Click export → ready in Godot  
 ✅ **Real-Time Sync**: Changes appear immediately in Godot editor  
 ✅ **Format Fidelity**: No loss of timing, colors, or animation data  
 ✅ **Variant Support**: Palette swaps work seamlessly  
-✅ **Performance**: Large sprites export quickly (<5 seconds)  
+✅ **Performance**: Large sprites export quickly (<5 seconds)
 
 ---
 
