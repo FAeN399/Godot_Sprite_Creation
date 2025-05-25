@@ -7,17 +7,21 @@ related_spec: spec.md
 date: 2025-05-25
 ---
 
-## 🎉 MAJOR MILESTONE: Phase 2 Complete! 
+## 🎉 MAJOR MILESTONE: Phase 3 Complete! 
 
-**✅ All core data models and services implemented**
+**✅ All core data models, services, and canvas tools implemented**
 - Complete sprite data foundation with JSON schema validation
 - Robust animation system with frame timeline support  
 - Advanced palette utilities with ASE import and swapping
 - Efficient layer bitmap encoding with RLE compression
 - Full undo/redo service supporting 100+ operations
 - Comprehensive autosave system with recovery capabilities
+- Interactive pixel canvas with checkerboard rendering
+- Complete drawing tools with mouse input integration
+- Onion-skin overlay system for animation staging
+- Mirror drawing functionality for symmetric sprite creation
 
-**🎯 Ready for Phase 3: Canvas & Editing Tools**
+**🎯 Ready for Phase 4: UI Panels**
 
 ---
 
@@ -35,14 +39,14 @@ date: 2025-05-25
 - [x] **Undo/Redo Service** – command stack (Plan 8, SPR-FR-9)
 - [x] **Autosave Service** – write/prune snapshots (Plan 9, SPR-FR-9)
 
-### Phase 3 – Canvas & Editing Tools 🎯 **NEXT PRIORITY**
+### Phase 3 – Canvas & Editing Tools ✅ **COMPLETED**
 
 - [x] **Canvas Renderer Skeleton** – checkerboard grid (Plan 10, SPR-FR-1) ✅
 - [x] **Draw Pixel Action** – mouse input → model (Plan 11, SPR-FR-1) ✅
-- [x] **Onion-Skin Overlay** – ghost frames (Plan 12, SPR-FR-4)
-- [ ] **Mirror Drawing** – symmetric pixels (Plan 13, toolbar spec)
+- [x] **Onion-Skin Overlay** – ghost frames (Plan 12, SPR-FR-4) ✅
+- [x] **Mirror Drawing** – symmetric pixels (Plan 13, toolbar spec) ✅
 
-### Phase 4 – UI Panels
+### Phase 4 – UI Panels 🎯 **NEXT PRIORITY**
 - [x] **Layers Panel** – thumbnails, opacity, add/merge (Plan 14, SPR-FR-2) ✅
 - [ ] **Palette Panel** – swatches, import `.ase` (Plan 15, SPR-FR-5)
 - [ ] **Random Sprite Generator** – component selection & generation (Plan 16, SPR-FR-11)
