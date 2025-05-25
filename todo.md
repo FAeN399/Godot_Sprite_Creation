@@ -4,14 +4,29 @@ title: Sprite Creator To-Do Checklist
 project: JRPG Desktop Tool-Suite — Sprite Creator
 related_plan: prompt_plan.md
 related_spec: spec.md
-date: 2025-05-24
+date: 2025-05-25
+---
+
+## 🎉 MAJOR MILESTONE: Phase 2 Complete! 
+
+**✅ All core data models and services implemented**
+- Complete sprite data foundation with JSON schema validation
+- Robust animation system with frame timeline support  
+- Advanced palette utilities with ASE import and swapping
+- Efficient layer bitmap encoding with RLE compression
+- Full undo/redo service supporting 100+ operations
+- Comprehensive autosave system with recovery capabilities
+
+**🎯 Ready for Phase 3: Canvas & Editing Tools**
+
 ---
 
 ### Phase 1 – Infrastructure & Standards
 - [x] **Repo Scaffold & CI** – monorepo package + CI workflow (Plan 1, NFR-1/NFR-5)
 - [x] **Lint / Format Baseline** – ESLint + Prettier + Husky (Plan 2, NFR-3/NFR-5)
 
-### Phase 2 – Core Data Models
+### Phase 2 – Core Data Models ✅ **COMPLETED**
+
 - [x] **Sprite JSON Schema** – define & failing validation test (Plan 3, SPR-FR-2/3)
 - [x] **Data Model Implementation** – make schema test pass (Plan 4)
 - [x] **Palette Utilities** – 256-color palette ops (Plan 5, SPR-FR-5/6)
@@ -20,7 +35,8 @@ date: 2025-05-24
 - [x] **Undo/Redo Service** – command stack (Plan 8, SPR-FR-9)
 - [x] **Autosave Service** – write/prune snapshots (Plan 9, SPR-FR-9)
 
-### Phase 3 – Canvas & Editing Tools
+### Phase 3 – Canvas & Editing Tools 🎯 **NEXT PRIORITY**
+
 - [ ] **Canvas Renderer Skeleton** – checkerboard grid (Plan 10, SPR-FR-1)
 - [ ] **Draw Pixel Action** – mouse input → model (Plan 11, SPR-FR-1)
 - [ ] **Onion-Skin Overlay** – ghost frames (Plan 12, SPR-FR-4)

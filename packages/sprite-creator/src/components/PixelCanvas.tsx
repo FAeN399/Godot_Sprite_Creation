@@ -60,12 +60,7 @@ export const PixelCanvas: React.FC<PixelCanvasProps> = ({
       data-testid="pixel-canvas"
       className="pixel-canvas-container checkerboard-bg"
     >
-      <Stage
-        width={stageWidth}
-        height={stageHeight}
-        onClick={handleStageClick}
-        onTap={handleStageClick}
-      >
+      <Stage width={stageWidth} height={stageHeight} onClick={handleStageClick}>
         <Layer>{checkerboardTiles}</Layer>
       </Stage>
     </div>
