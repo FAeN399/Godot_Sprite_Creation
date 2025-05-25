@@ -38,12 +38,12 @@ date: 2025-05-25
 ### Phase 3 – Canvas & Editing Tools 🎯 **NEXT PRIORITY**
 
 - [x] **Canvas Renderer Skeleton** – checkerboard grid (Plan 10, SPR-FR-1) ✅
-- [ ] **Draw Pixel Action** – mouse input → model (Plan 11, SPR-FR-1)
-- [ ] **Onion-Skin Overlay** – ghost frames (Plan 12, SPR-FR-4)
+- [x] **Draw Pixel Action** – mouse input → model (Plan 11, SPR-FR-1) ✅
+- [x] **Onion-Skin Overlay** – ghost frames (Plan 12, SPR-FR-4)
 - [ ] **Mirror Drawing** – symmetric pixels (Plan 13, toolbar spec)
 
 ### Phase 4 – UI Panels
-- [ ] **Layers Panel** – thumbnails, opacity, add/merge (Plan 14, SPR-FR-2)
+- [x] **Layers Panel** – thumbnails, opacity, add/merge (Plan 14, SPR-FR-2) ✅
 - [ ] **Palette Panel** – swatches, import `.ase` (Plan 15, SPR-FR-5)
 - [ ] **Random Sprite Generator** – component selection & generation (Plan 16, SPR-FR-11)
 - [ ] **Variants Panel** – palette-swap list (Plan 18, SPR-FR-6)

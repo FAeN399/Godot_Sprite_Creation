@@ -22,6 +22,11 @@ export default [
         setTimeout: 'readonly',
         clearInterval: 'readonly',
         setInterval: 'readonly',
+        HTMLDivElement: 'readonly',
+        HTMLCanvasElement: 'readonly',
+        KeyboardEvent: 'readonly',
+        document: 'readonly',
+        globalThis: 'readonly',
       },
     },
     plugins: {
