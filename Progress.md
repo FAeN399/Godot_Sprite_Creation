@@ -43,11 +43,13 @@
 **Ready for Phase 3**: Canvas & Editing Tools - UI implementation begins
 
 **✅ Plan 10 COMPLETE**: Canvas Renderer Skeleton - Checkerboard grid with react-konva established and tested
+**✅ Plan 11 COMPLETE**: Draw Pixel Action (SPR-FR-1) - Mouse input to model integration with LayerBitmap.setPixel() wired to canvas clicks, color selection, and real-time pixel rendering over checkerboard transparency
+**✅ Plan 12 COMPLETE**: Onion-Skin Overlay (SPR-FR-4) - Ghost frame preview with adjustable opacity, multi-frame navigation, and real-time onion-skin updates
+**✅ Plan 13 COMPLETE**: Mirror Drawing Toggle - Symmetric pixel placement with real-time mirror mode, handles center line correctly, integrated with PixelCanvas component
 
 Next immediate tasks:
-- **Plan 11**: Draw Pixel Action (SPR-FR-1) - Mouse input to model integration
-- **Plan 12**: Onion-Skin Overlay (SPR-FR-4) - Ghost frame preview
-- **Plan 13**: Mirror Drawing - Symmetric pixel placement
+
+- **Plan 14**: Layers Panel - Layer management UI
 
 **Current Focus**: Canvas skeleton ready, proceeding with pixel drawing functionality.
 
